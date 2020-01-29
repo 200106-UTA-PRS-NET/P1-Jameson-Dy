@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace PizzaSystemMVC
+namespace PizzaSquare.Web
 {
     public class Program
     {

@@ -5,11 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PizzaSquare.Data.Repositories;
+using PizzaSquare.Lib;
+using PizzaSquare.Lib.Interfaces;
 
-namespace PizzaSystemMVC
+namespace PizzaSquare.Web
 {
     public class Startup
     {
@@ -24,6 +28,16 @@ namespace PizzaSystemMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddDbContext<PizzaSquareContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("PizzaSquareDB")));
+
+            // Adding Dependency to your Controller to use Db
+            services.AddTransient<IUserRepo, UserRepo>();
+            services.AddTransient<IStoreRepo, StoreRepo>();
+
+            services.AddControllersWithViews();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

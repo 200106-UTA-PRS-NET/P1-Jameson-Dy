@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PizzaSystemMVC.Models;
+using PizzaSquare.Web.Models;
 
-namespace PizzaSystemMVC.Controllers
+namespace PizzaSquare.Web.Controllers
 {
     public class HomeController : Controller
     {
