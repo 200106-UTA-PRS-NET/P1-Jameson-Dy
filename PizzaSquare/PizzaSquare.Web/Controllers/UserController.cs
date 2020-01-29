@@ -82,6 +82,7 @@ namespace PizzaSquare.Web.Controllers
                         // login success
                         return RedirectToAction(nameof(Info),1);
                     }
+
                     return Login();
                 }
                 else

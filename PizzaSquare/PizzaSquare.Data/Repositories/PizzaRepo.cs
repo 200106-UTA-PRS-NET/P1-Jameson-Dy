@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using PizzaSquare.Data.Models;
 
 namespace PizzaSquare.Data.Repositories
 {
@@ -31,5 +32,17 @@ namespace PizzaSquare.Data.Repositories
 
             return crust + sauce + cheese + size;
         }
+
+        public PizzaTypeModel GetPizzaTypeModel()
+        {
+            return new PizzaTypeModel()
+            {
+                Cheeses = db.Cheeses.Select(c => c).ToList(),
+                Sauces = db.Sauces.Select(s => s).ToList(),
+                Crusts = db.Crusts.Select(c => c).ToList(),
+                Sizes = db.Sizes.Select(s => s).ToList()
+            };
+        }
+
     }
 }

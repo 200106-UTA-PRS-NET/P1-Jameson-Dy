@@ -35,8 +35,19 @@ namespace PizzaSquare.Web.Controllers
             }
             return View(svm);
         }
+        
+        // Page to create custom pizzas
+        public IActionResult Custom()
+        {
+            CustomPizzaViewModel customPizzaModel = new CustomPizzaViewModel()
+            {
 
+            };
 
+            return View(customPizzaModel);
+        }
+
+        // Displays store preset pizzas
         public IActionResult Menu(int? id)
         {
             if (id == null)

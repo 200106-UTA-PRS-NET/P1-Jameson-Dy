@@ -13,6 +13,8 @@ namespace PizzaSquare.Data.Models
         public Crusts Crust { get; set; }
         public Sauces Sauce { get; set; }
         public Sizes Size { get; set; }
+
+
         public Toppings Topping1 { get; set; }
         public Toppings Topping2 { get; set; }
         public decimal Price { get; set; }
