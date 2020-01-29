@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PizzaSquare.Lib;
 using PizzaSquare.Lib.Interfaces;
 using PizzaSquare.Web.Models;
 
@@ -20,7 +21,7 @@ namespace PizzaSquare.Web.Controllers
 
         [Route("User")]
         [Route("User/Info")]
-        public IActionResult Info(int id=1)
+        public IActionResult Info(int id)
         {
             var user = _repo.GetUserByID(id);
 
@@ -36,6 +37,40 @@ namespace PizzaSquare.Web.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(UserViewModel user)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    // TODO: Add insert logic here
+                    Users emp = new Users()
+                    {
+                        Name = user.Name,
+                        Username = user.Username,
+                        Password = user.Password
+                    };
+
+                    _repo.AddUser(emp);
+
+                    return RedirectToAction("Login");
+                }
+                else
+                    return View();
+            }
+            catch
+            {
+                return View();
+            }
         }
 
     }

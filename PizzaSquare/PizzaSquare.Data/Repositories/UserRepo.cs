@@ -10,6 +10,7 @@ namespace PizzaSquare.Data.Repositories
     public class UserRepo : IUserRepo
     {
         PizzaSquareContext db;
+        static Users currUser = new Users();
 
         public UserRepo()
         {
@@ -18,6 +19,30 @@ namespace PizzaSquare.Data.Repositories
         public UserRepo(PizzaSquareContext db)
         {
             this.db = db ?? throw new ArgumentNullException(nameof(db));
+        }
+
+        public Users GetCurrUser()
+        {
+            return currUser;
+        }
+
+        public void SetCurrUser(Users u)
+        {
+            currUser = u;
+        }
+
+        public void AddUser(Users user)
+        {
+            if (db.Users.Any(u => u.Username == user.Username) || user.Username == null)
+            {
+                Console.WriteLine($"Username {user.Username} already exists");
+                return;
+            }
+            else
+            {
+                db.Users.Add(user);
+                db.SaveChanges();
+            }
         }
 
         public Users GetUserByID(int id)

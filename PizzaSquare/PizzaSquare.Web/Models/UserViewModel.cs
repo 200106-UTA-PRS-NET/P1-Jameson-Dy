@@ -12,6 +12,7 @@ namespace PizzaSquare.Web.Models
         public string Name { get; set; }
         [Required(ErrorMessage = "Username cannot be empty")]
         public string Username { get; set; }
+        public string Password { get; set; }
 
     }
 }

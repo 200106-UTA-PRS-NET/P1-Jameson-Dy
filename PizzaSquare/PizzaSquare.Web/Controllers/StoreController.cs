@@ -11,10 +11,13 @@ namespace PizzaSquare.Web.Controllers
     public class StoreController : Controller
     {
         private readonly IStoreRepo _repo;
+        private readonly IPizzaRepo _pizzaRepo;
 
-        public StoreController(IStoreRepo repo)
+        public StoreController(IStoreRepo repo, IPizzaRepo pizzaRepo)
         {
             _repo = repo;
+            _pizzaRepo = pizzaRepo;
+
         }
 
         public IActionResult Index()
@@ -25,11 +28,40 @@ namespace PizzaSquare.Web.Controllers
             {
                 StoreViewModel store = new StoreViewModel()
                 {
-                    Name = item.Name
+                    Name = item.Name,
+                    Id = item.Id
                 };
                 svm.Add(store);
             }
             return View(svm);
+        }
+
+
+        public IActionResult Menu(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var pizzas = _repo.GetStorePizzasById(id.Value);
+            List<StorePizzaViewModel> spvm = new List<StorePizzaViewModel>();
+            foreach(var p in pizzas)
+            {
+                StorePizzaViewModel pizza = new StorePizzaViewModel()
+                {
+                    PizzaName = p.Name,
+                    Crust = p.Crust.Name,
+                    Sauce = p.Sauce.Name,
+                    Cheese = p.Cheese.Name,
+                    Toppings = new List<String>() { p.Topping1.Name, p.Topping2.Name },
+                    Price = _pizzaRepo.GetPriceByID(p.Id)
+                    
+                };
+                spvm.Add(pizza);
+            }
+
+            return View(spvm);
         }
     }
 }

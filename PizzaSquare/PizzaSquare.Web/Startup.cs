@@ -35,6 +35,7 @@ namespace PizzaSquare.Web
             // Adding Dependency to your Controller to use Db
             services.AddTransient<IUserRepo, UserRepo>();
             services.AddTransient<IStoreRepo, StoreRepo>();
+            services.AddTransient<IPizzaRepo, PizzaRepo>();
 
             services.AddControllersWithViews();
 
