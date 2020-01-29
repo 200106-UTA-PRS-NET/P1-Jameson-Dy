@@ -7,6 +7,8 @@ namespace PizzaSquare.Web.Models
 {
     public class StorePizzaViewModel
     {
+        public int StoreID { get; set; }
+        public int PizzaID { get; set; }
         public string StoreName { get; set; }
         public string PizzaName { get; set; }
         public string Crust { get; set; }

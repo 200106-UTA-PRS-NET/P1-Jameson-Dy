@@ -50,6 +50,9 @@ namespace PizzaSquare.Web.Controllers
             {
                 StorePizzaViewModel pizza = new StorePizzaViewModel()
                 {
+                    StoreID = id.Value,
+                    PizzaID = p.Id,
+                    StoreName = _repo.GetStoreById(id.Value).Name,
                     PizzaName = p.Name,
                     Crust = p.Crust.Name,
                     Sauce = p.Sauce.Name,

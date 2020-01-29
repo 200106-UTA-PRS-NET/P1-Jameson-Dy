@@ -21,27 +21,76 @@ namespace PizzaSquare.Web.Controllers
 
         [Route("User")]
         [Route("User/Info")]
-        public IActionResult Info(int id)
+        public IActionResult Info(int? id)
         {
-            if (_repo.GetCurrUser() == null)
+            var currUser = _repo.GetCurrUser();
+
+            if (currUser == null)
             {
+                // not logged in -> send to login page
                 return RedirectToAction(nameof(Login));
             }
+            
+            // assert: logged in
 
-            var user = _repo.GetUserByID(id);
+            //var user = _repo.GetUserByID(id.Value);
 
             UserViewModel uvm = new UserViewModel()
             {
-                Name = user.Name,
-                Username = user.Username
+                Name = currUser.Name,
+                Username = currUser.Username
             };
 
             return View(uvm);
         }
 
+        public IActionResult Logout()
+        {
+            _repo.Logout();
+            return Redirect(nameof(Login));
+        }
+
         public IActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(LoginUserViewModel user)
+        {
+            var currUser = _repo.GetCurrUser();
+
+            if (currUser != null)
+            {
+                // someone already logged in
+                return RedirectToAction("Info", currUser.Id);
+            }
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Users emp = new Users()
+                    {
+                        Username = user.Username,
+                        Password = user.Password
+                    };
+
+                    if (_repo.Login(emp))
+                    {
+                        // login success
+                        return RedirectToAction(nameof(Info),1);
+                    }
+                    return Login();
+                }
+                else
+                    return View();
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         public IActionResult Register()

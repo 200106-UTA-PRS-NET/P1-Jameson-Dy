@@ -41,6 +41,12 @@ namespace PizzaSquare.Data.Repositories
             return pizzas;
         }
 
+        public Stores GetStoreById(int id)
+        {
+            var query = db.Stores.Where(s => s.Id == id).Single();
+            return query;
+        }
+
         public IEnumerable<Stores> GetStores()
         {
             var query = db.Stores.Select(s => s);

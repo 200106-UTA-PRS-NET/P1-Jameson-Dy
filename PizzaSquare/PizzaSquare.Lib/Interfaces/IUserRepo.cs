@@ -12,6 +12,8 @@ namespace PizzaSquare.Lib.Interfaces
 
         public Users GetCurrUser();
         public void SetCurrUser(Users u);
+        public bool Login(Users u);
+        public void Logout();
 
     }
 }

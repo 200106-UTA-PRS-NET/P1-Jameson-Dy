@@ -57,5 +57,23 @@ namespace PizzaSquare.Data.Repositories
             var query = db.Users.Select(u => u);
             return query;
         }
+
+        public bool Login(Users user)
+        {
+            try
+            {
+                var query = db.Users.Where(u => u.Username == user.Username && u.Password == user.Password).Single();
+                currUser = query;
+                return true;
+            } catch (InvalidOperationException)
+            {
+                return false;
+            }
+        }
+
+        public void Logout()
+        {
+            currUser = null;
+        }
     }
 }

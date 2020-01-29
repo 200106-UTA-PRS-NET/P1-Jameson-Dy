@@ -9,5 +9,6 @@ namespace PizzaSquare.Lib.Interfaces
         public IEnumerable<Stores> GetStores();
 
         public IEnumerable<Pizzas> GetStorePizzasById(int id);
+        public Stores GetStoreById(int id);
     }
 }
