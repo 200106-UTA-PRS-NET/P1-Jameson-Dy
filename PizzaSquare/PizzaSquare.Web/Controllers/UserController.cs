@@ -23,6 +23,11 @@ namespace PizzaSquare.Web.Controllers
         [Route("User/Info")]
         public IActionResult Info(int id)
         {
+            if (_repo.GetCurrUser() == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
             var user = _repo.GetUserByID(id);
 
             UserViewModel uvm = new UserViewModel()
