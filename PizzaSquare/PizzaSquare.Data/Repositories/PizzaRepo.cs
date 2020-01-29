@@ -33,16 +33,29 @@ namespace PizzaSquare.Data.Repositories
             return crust + sauce + cheese + size;
         }
 
-        public PizzaTypeModel GetPizzaTypeModel()
+        public List<Cheeses> GetCheeseTypes()
         {
-            return new PizzaTypeModel()
-            {
-                Cheeses = db.Cheeses.Select(c => c).ToList(),
-                Sauces = db.Sauces.Select(s => s).ToList(),
-                Crusts = db.Crusts.Select(c => c).ToList(),
-                Sizes = db.Sizes.Select(s => s).ToList()
-            };
+            return db.Cheeses.Select(c => c).ToList();
         }
 
+        public List<Crusts> GetCrustTypes()
+        {
+            return db.Crusts.Select(c => c).ToList();
+        }
+
+        public List<Sauces> GetSauceTypes()
+        {
+            return db.Sauces.Select(c => c).ToList();
+        }
+
+        public List<Sizes> GetSizeTypes()
+        {
+            return db.Sizes.Select(c => c).ToList();
+        }
+
+        public List<Toppings> GetToppingTypes()
+        {
+            return db.Toppings.Select(c => c).ToList();
+        }
     }
 }
