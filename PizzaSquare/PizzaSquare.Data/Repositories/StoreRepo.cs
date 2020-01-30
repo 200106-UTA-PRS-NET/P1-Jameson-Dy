@@ -12,6 +12,7 @@ namespace PizzaSquare.Data.Repositories
     public class StoreRepo : IStoreRepo
     {
         PizzaSquareContext db;
+        static Stores currStore;
 
         public StoreRepo()
         {
@@ -51,6 +52,16 @@ namespace PizzaSquare.Data.Repositories
         {
             var query = db.Stores.Select(s => s);
             return query;
+        }
+
+        public void SetCurrStore(Stores s)
+        {
+            currStore = s;
+        }
+
+        public Stores GetCurrStore()
+        {
+            return currStore;
         }
     }
 }

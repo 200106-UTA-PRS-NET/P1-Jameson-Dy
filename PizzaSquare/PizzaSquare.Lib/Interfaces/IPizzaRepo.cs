@@ -12,6 +12,7 @@ namespace PizzaSquare.Lib.Interfaces
         public List<Crusts> GetCrustTypes();
         public List<Sizes> GetSizeTypes();
         public List<Toppings> GetToppingTypes();
-
+        public Pizzas MapPizzaByIDs(int crustID, int sauceID, int cheeseID, int sizeID, int topping1ID, int topping2ID);
+        public decimal GetPriceByPizza(Pizzas p);
     }
 }

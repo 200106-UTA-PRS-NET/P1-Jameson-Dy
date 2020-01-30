@@ -13,12 +13,13 @@ namespace PizzaSquare.Web.Controllers
     {
         private readonly IStoreRepo _repo;
         private readonly IPizzaRepo _pizzaRepo;
+        private readonly IOrderRepo _orderRepo;
 
-        public StoreController(IStoreRepo repo, IPizzaRepo pizzaRepo)
+        public StoreController(IStoreRepo repo, IPizzaRepo pizzaRepo, IOrderRepo orderRepo)
         {
             _repo = repo;
             _pizzaRepo = pizzaRepo;
-
+            _orderRepo = orderRepo;
         }
 
         public IActionResult Index()
@@ -65,24 +66,62 @@ namespace PizzaSquare.Web.Controllers
             return View(customPizzaModel);
         }
        
-        [HttpPost]
-        public IActionResult ConfirmAddPizzaToOrder(CustomPizzaViewModel c)
+        [HttpGet]
+        public IActionResult ConfirmPizza(CustomPizzaViewModel c)
         {
             Pizzas pizza = _pizzaRepo.MapPizzaByIDs(c.SelCrustId, c.SelSauceId, c.SelCheeseId, c.SelSizeId, c.SelTopping1Id, c.SelTopping2Id);
-
+            _orderRepo.SetCurrentPizza(pizza);
             PizzaViewModel pvm = new PizzaViewModel()
             {
-                Cheese = pizza.Cheese.Name,
-                Sauce = pizza.Sauce.Name,
-                Size = pizza.Size.Name,
-                Crust = pizza.Crust.Name,
-                Topping1 = pizza.Topping1.Name,
-                Topping2 = pizza.Topping2.Name
+                Cheese = pizza.Cheese,
+                Sauce = pizza.Sauce,
+                Size = pizza.Size,
+                Crust = pizza.Crust,
+                Topping1 = pizza.Topping1,
+                Topping2 = pizza.Topping2,
+                Price = _pizzaRepo.GetPriceByPizza(pizza)
             };
 
             return View(pvm);
-
         }
+
+        [HttpPost]
+        public IActionResult ConfirmPizza(PizzaViewModel pvm)
+        {
+            Pizzas p = _orderRepo.GetCurrentPizza();
+            _orderRepo.AddPizzaToOrder(p, _pizzaRepo.GetPriceByPizza(p));
+
+
+
+            return RedirectToAction("ViewOrder", "Order");
+        }
+
+
+        // Displays store order history
+        public IActionResult OrderHistory(int? id)
+        {
+            List<Orders> orders = _orderRepo.GetStoreOrderHistoryById(id.Value);
+
+            List<StoreOrderHistoryViewModel> storeOrdersVM = new List<StoreOrderHistoryViewModel>();
+
+            
+            foreach(var item in orders)
+            {
+                StoreOrderHistoryViewModel oVM = new StoreOrderHistoryViewModel()
+                {
+                    UserID = item.UserId.Value,
+                    OrderID = item.Id,
+                    OrderDate = item.OrderDate.Value,
+                    Subtotal = item.TotalPrice.Value,
+                    OrderedPizzas = _orderRepo.GetOrderedPizzasByOrderId(item.Id)
+                };
+
+                storeOrdersVM.Add(oVM);
+            }
+
+            return View(storeOrdersVM);
+        }
+
 
         // Displays store preset pizzas
         public IActionResult Menu(int? id)
@@ -91,6 +130,9 @@ namespace PizzaSquare.Web.Controllers
             {
                 return NotFound();
             }
+
+            Stores store = _repo.GetStoreById(id.Value);
+            _repo.SetCurrStore(store);
 
             var pizzas = _repo.GetStorePizzasById(id.Value);
             List<StorePizzaViewModel> spvm = new List<StorePizzaViewModel>();

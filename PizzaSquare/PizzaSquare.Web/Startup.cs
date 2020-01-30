@@ -36,6 +36,7 @@ namespace PizzaSquare.Web
             services.AddTransient<IUserRepo, UserRepo>();
             services.AddTransient<IStoreRepo, StoreRepo>();
             services.AddTransient<IPizzaRepo, PizzaRepo>();
+            services.AddTransient<IOrderRepo, OrderRepo>();
 
             services.AddControllersWithViews();
 

@@ -1,42 +1,69 @@
 ﻿@model PizzaSquare.Web.Models.PizzaViewModel
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "Confirm Pizza";
 }
 
-<h1>View</h1>
+<h1>Confirm Pizza</h1>
+
+
 
 <div>
     <h4>PizzaViewModel</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Crust)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Crust)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sauce)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sauce)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cheese)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cheese)
-        </dd>
-    </dl>
+
+    <form asp-action="ConfirmPizza" method="post">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Crust)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Crust.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Sauce)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Sauce.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Cheese)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Cheese.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Size)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Size.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Topping1)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Topping1.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Topping2)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Topping2.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+
+            @Html.HiddenFor(m => m.Crust)
+            @Html.HiddenFor(m => m.Cheese)
+
+            <dd class="col-sm-10">
+                <input type="submit" value="Confirm" class="btn btn-primary" />
+            </dd>
+        </dl>
+    </form>
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+

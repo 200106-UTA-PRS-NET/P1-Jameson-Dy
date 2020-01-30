@@ -10,5 +10,7 @@ namespace PizzaSquare.Lib.Interfaces
 
         public IEnumerable<Pizzas> GetStorePizzasById(int id);
         public Stores GetStoreById(int id);
+        public void SetCurrStore(Stores s);
+        public Stores GetCurrStore();
     }
 }

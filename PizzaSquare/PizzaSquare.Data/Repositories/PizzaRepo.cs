@@ -70,5 +70,10 @@ namespace PizzaSquare.Data.Repositories
         {
             return db.Toppings.Select(c => c).ToList();
         }
+
+        public decimal GetPriceByPizza(Pizzas p)
+        {
+            return p.Cheese.Price.Value + p.Sauce.Price.Value + p.Crust.Price.Value + p.Size.Price.Value;
+        }
     }
 }

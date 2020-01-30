@@ -1,0 +1,38 @@
+﻿@model PizzaSquare.Web.Models.OrderViewModel
+
+@{
+    ViewData["Title"] = "Confirm Order";
+}
+
+<h1>Confirm Order</h1>
+
+<div class="list-group">
+    @foreach (var item in Model.Pizzas)
+    {
+        <a class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">@item.Key.Name</h5>
+                <small>$ @item.Value.ToString("0.00")</small>
+            </div>
+            <label>Cheese: </label>
+            <text>@item.Key.Cheese.Name</text><br />
+            <label>Cruset: </label>
+            <text>@item.Key.Crust.Name</text><br />
+            <label>Sauce: </label>
+            <text>@item.Key.Sauce.Name</text><br />
+            <label>Size: </label>
+            <text>@item.Key.Size.Name</text><br />
+            <label>Toppings: </label>
+            <text>@item.Key.Topping1.Name, @item.Key.Topping2.Name</text>
+        </a>
+    }
+
+</div>
+
+<div style="padding: 10px">
+    <h1>Subtotal </h1>
+    <form asp-action="SubmitOrder">
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Confirm Order</button>
+    </form>
+</div>
+
