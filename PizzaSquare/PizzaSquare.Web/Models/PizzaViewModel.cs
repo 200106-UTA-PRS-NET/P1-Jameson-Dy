@@ -11,6 +11,9 @@ namespace PizzaSquare.Web.Models
         public string Crust { get; set; }
         public string Sauce { get; set; }
         public string Cheese { get; set; }
+        public string Size { get; set; }
+        public string Topping1 { get; set; }
+        public string Topping2 { get; set; }
 
     }
 }

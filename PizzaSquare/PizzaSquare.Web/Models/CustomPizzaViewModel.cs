@@ -1,6 +1,7 @@
 ﻿using PizzaSquare.Lib;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,12 +9,17 @@ namespace PizzaSquare.Web.Models
 {
     public class CustomPizzaViewModel
     {
-        public List<Crusts> Crusts { get; set; }
-        public List<Sauces> Sauces { get; set; }
-        public List<Cheeses> Cheeses { get; set; }
-        public List<Sizes> Sizes { get; set; }
-
-        public int CheeseId { get; set; }
-        public int CrustId { get; set; }
+        [Required]
+        public int SelCrustId { get; set; }
+        [Required]
+        public int SelSauceId { get; set; }
+        [Required]
+        public int SelCheeseId { get; set; }
+        [Required]
+        public int SelSizeId { get; set; }
+        [Required]
+        public int SelTopping1Id { get; set; }
+        [Required]
+        public int SelTopping2Id { get; set; }
     }
 }

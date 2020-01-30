@@ -11,6 +11,7 @@ namespace PizzaSquare.Data.Models
         public List<Sauces> Sauces { get; set; }
         public List<Sizes> Sizes { get; set; }
         public List<Crusts> Crusts { get; set; }
+        public List<Toppings> Toppings { get; set; }
 
     }
 }

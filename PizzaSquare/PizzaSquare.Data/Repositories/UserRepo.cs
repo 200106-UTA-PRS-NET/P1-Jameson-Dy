@@ -9,7 +9,7 @@ namespace PizzaSquare.Data.Repositories
 {
     public class UserRepo : IUserRepo
     {
-        PizzaSquareContext db;
+        readonly PizzaSquareContext db;
         static Users currUser;
 
         public UserRepo()

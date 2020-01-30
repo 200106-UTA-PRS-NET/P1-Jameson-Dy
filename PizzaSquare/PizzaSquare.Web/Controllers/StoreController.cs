@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PizzaSquare.Lib;
 using PizzaSquare.Lib.Interfaces;
 using PizzaSquare.Web.Models;
 
@@ -39,15 +40,48 @@ namespace PizzaSquare.Web.Controllers
         // Page to create custom pizzas
         public IActionResult Custom()
         {
+            Dictionary<Toppings, bool> top = new Dictionary<Toppings, bool>();
+            foreach(var topping in _pizzaRepo.GetToppingTypes())
+            {
+                top.Add(topping, false);
+            }
+
             CustomPizzaViewModel customPizzaModel = new CustomPizzaViewModel()
             {
-                Cheeses = _pizzaRepo.GetCheeseTypes(),
-                Sauces = _pizzaRepo.GetSauceTypes(),
-                Crusts = _pizzaRepo.GetCrustTypes(),
-                Sizes = _pizzaRepo.GetSizeTypes()
+                SelCheeseId = 1,
+                SelCrustId = 1,
+                SelSauceId = 1,
+                SelSizeId = 1,
+                SelTopping1Id = 1,
+                SelTopping2Id = 2,
             };
 
+            ViewData["cheeses"] = _pizzaRepo.GetCheeseTypes();
+            ViewData["sauces"] = _pizzaRepo.GetSauceTypes();
+            ViewData["crusts"] = _pizzaRepo.GetCrustTypes();
+            ViewData["sizes"] = _pizzaRepo.GetSizeTypes();
+            ViewData["toppings"] = _pizzaRepo.GetToppingTypes();
+
             return View(customPizzaModel);
+        }
+       
+        [HttpPost]
+        public IActionResult ConfirmAddPizzaToOrder(CustomPizzaViewModel c)
+        {
+            Pizzas pizza = _pizzaRepo.MapPizzaByIDs(c.SelCrustId, c.SelSauceId, c.SelCheeseId, c.SelSizeId, c.SelTopping1Id, c.SelTopping2Id);
+
+            PizzaViewModel pvm = new PizzaViewModel()
+            {
+                Cheese = pizza.Cheese.Name,
+                Sauce = pizza.Sauce.Name,
+                Size = pizza.Size.Name,
+                Crust = pizza.Crust.Name,
+                Topping1 = pizza.Topping1.Name,
+                Topping2 = pizza.Topping2.Name
+            };
+
+            return View(pvm);
+
         }
 
         // Displays store preset pizzas

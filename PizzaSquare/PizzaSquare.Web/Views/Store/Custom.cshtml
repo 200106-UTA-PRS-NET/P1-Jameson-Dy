@@ -1,35 +1,45 @@
 ﻿@model PizzaSquare.Web.Models.CustomPizzaViewModel
-
+@using PizzaSquare.Lib;
 @{
     ViewData["Title"] = "Custom";
 }
 
 <h1>Create your own pizza</h1>
 
-
-
-<form asp-action="Custom">
+<form asp-action="Test">
     <fieldset>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <legend>Crust</legend>
-        @foreach (var item in Model.Crusts)
+        @foreach (var item in ViewBag.crusts as IList<Crusts>)
         {
-            <input type="radio" name="crust_select" value="Cats"> @item.Name <br />
+            @Html.RadioButtonFor(m => m.SelCrustId, item.Id) <text>@item.Name</text><br />
         }
         <legend>Cheese</legend>
-        @foreach (var item in Model.Cheeses)
+        @foreach (var item in ViewBag.cheeses as IList<Cheeses>)
         {
-            <input type="radio" name="cheese_select" value="Cats"> @item.Name <br />
+            @Html.RadioButtonFor(m => m.SelCheeseId, item.Id) <text>@item.Name</text><br />
         }
         <legend>Sauce</legend>
-        @foreach (var item in Model.Sauces)
+        @foreach (var item in ViewBag.sauces as IList<Sauces>)
         {
-            <input type="radio" name="sauce_select" value="Cats"> @item.Name <br />
+            @Html.RadioButtonFor(m => m.SelSauceId, item.Id) <text>@item.Name</text><br />
         }
         <legend>Size</legend>
-        @foreach (var item in Model.Sizes)
+        @foreach (var item in ViewBag.sizes as IList<Sizes>)
         {
-            <input type="radio" name="size_select" value="Cats"> @item.Name <br />
+            @Html.RadioButtonFor(m => m.SelSizeId, item.Id) <text>@item.Name</text><br />
         }
+        <legend>Topping1</legend>
+        @foreach (var item in ViewBag.toppings as IList<Toppings>)
+        {
+            @Html.RadioButtonFor(m => m.SelTopping1Id, item.Id) <text>@item.Name</text><br />
+        }
+        <legend>Topping2</legend>
+        @foreach (var item in ViewBag.toppings as IList<Toppings>)
+        {
+            @Html.RadioButtonFor(m => m.SelTopping2Id, item.Id) <text>@item.Name</text><br />
+        }
+
         <input type="submit" value="submit">
     </fieldset>
 </form>

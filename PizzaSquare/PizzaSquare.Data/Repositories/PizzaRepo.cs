@@ -21,6 +21,19 @@ namespace PizzaSquare.Data.Repositories
             this.db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
+        public Pizzas MapPizzaByIDs(int crustID, int sauceID, int cheeseID, int sizeID, int topping1ID, int topping2ID)
+        {
+            return new Pizzas()
+            {
+                Cheese = db.Cheeses.Where(c => c.Id == cheeseID).Single(),
+                Sauce = db.Sauces.Where(s => s.Id == sauceID).Single(),
+                Crust = db.Crusts.Where(c => c.Id == crustID).Single(),
+                Size = db.Sizes.Where(s => s.Id == sizeID).Single(),
+                Topping1 = db.Toppings.Where(t => t.Id == topping1ID).Single(),
+                Topping2 = db.Toppings.Where(t => t.Id == topping2ID).Single()
+            };
+        }
+
         public decimal GetPriceByID(int id)
         {
             var pizza = db.Pizzas.Where(p => p.Id == id).Single();
