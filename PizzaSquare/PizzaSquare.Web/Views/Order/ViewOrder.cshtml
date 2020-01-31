@@ -34,9 +34,8 @@
     <form asp-action="SubmitOrder">
         <button type="submit" class="btn btn-primary btn-lg btn-block">Confirm Order</button>
     </form>
-    <form asp-controller="" asp-action="SubmitOrder">
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Confirm Order</button>
+    <form asp-controller="Store" asp-action="Menu" asp-route-id="@Model.StoreID">
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Add More Pizzas</button>
     </form>
-
 </div>
 

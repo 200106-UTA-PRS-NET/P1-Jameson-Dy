@@ -30,7 +30,8 @@ namespace PizzaSquare.Web.Controllers
 
             OrderViewModel ovm = new OrderViewModel()
             {
-                Pizzas = new Dictionary<Pizzas, decimal>()
+                Pizzas = new Dictionary<Pizzas, decimal>(),
+                StoreID = _storeRepo.GetCurrStore().Id
             };
 
             decimal subtotal = 0;
@@ -48,19 +49,21 @@ namespace PizzaSquare.Web.Controllers
             return View(ovm);
         }
 
-        public string SubmitOrder()
+        public IActionResult SubmitOrder()
         {
             if (_repo.SubmitOrder(_userRepo.GetCurrUser().Id, _storeRepo.GetCurrStore().Id))
             {
-                // :)
-                return ":D";
-
+                // ORDER SUBMITTED
+                return RedirectToAction("Menu", "Store", new { id = _storeRepo.GetCurrStore().Id });
             }
             else 
             {
-                // :(
-                return ":((";
+                // ORDER NOT SUBMITTED
+                return RedirectToAction("Menu", "StoreController", _storeRepo.GetCurrStore().Id);
             }
         }
+
+        
+
     }
 }

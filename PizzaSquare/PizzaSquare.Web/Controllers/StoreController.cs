@@ -126,6 +126,7 @@ namespace PizzaSquare.Web.Controllers
         // Displays store preset pizzas
         public IActionResult Menu(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
