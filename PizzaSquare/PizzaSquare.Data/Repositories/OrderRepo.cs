@@ -42,6 +42,8 @@ namespace PizzaSquare.Data.Repositories
             return currPizza;
         }
 
+
+
         public bool SubmitOrder(int userID, int storeID)
         {
 
@@ -85,7 +87,7 @@ namespace PizzaSquare.Data.Repositories
                 else
                 {
                     // add to list
-                    pizzaCount.Add(p, 1);
+                    pizzaCount.Add(pizzaOnlyIds, 1);
                 }
             }
 
