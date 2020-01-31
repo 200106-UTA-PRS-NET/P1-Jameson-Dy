@@ -164,5 +164,11 @@ namespace PizzaSquare.Data.Repositories
 
             return query.ToList();
         }
+
+        public void ClearOrder()
+        {
+            orderedPizzas.Clear();
+            currPizza = null;
+        }
     }
 }

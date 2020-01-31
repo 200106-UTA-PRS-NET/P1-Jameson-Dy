@@ -28,16 +28,62 @@ namespace PizzaSquare.Web.Controllers
 
         public IActionResult Index()
         {
+            if (currUser == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            _orderRepo.ClearOrder();
+
             var stores = _repo.GetStores();
             List<StoreViewModel> svm = new List<StoreViewModel>();
             foreach(var item in stores)
             {
-                StoreViewModel store = new StoreViewModel()
+                if (_repo.GetLastOrderDate(item.Id, currUser.Id).HasValue)
                 {
-                    Name = item.Name,
-                    Id = item.Id
-                };
-                svm.Add(store);
+                    // customer has previous order from this restaurant
+                    DateTime lastOrder = _repo.GetLastOrderDate(item.Id, currUser.Id).Value;
+                    TimeSpan timeSinceLastOrder = DateTime.Now - lastOrder;
+                    TimeSpan waitTime = DateTime.Now - lastOrder.AddHours(1);
+
+                    if (timeSinceLastOrder.TotalHours > 1)
+                    {
+                        // time since last order more than an hour from now - > can order
+                        StoreViewModel store = new StoreViewModel()
+                        {
+                            Name = item.Name,
+                            Id = item.Id,
+                            WaitTime = TimeSpan.Zero.ToString()
+                        };
+                        svm.Add(store);
+
+                    }
+                    else
+                    {
+                        // last order was within an hour before
+                        StoreViewModel store = new StoreViewModel()
+                        {
+                            Name = item.Name,
+                            Id = item.Id,
+                            WaitTime = waitTime.ToString(@"hh\:mm")
+                        };
+                        svm.Add(store);
+
+                    }
+                }
+                else
+                {
+                    // customer no previous order
+                    StoreViewModel store = new StoreViewModel()
+                    {
+                        Name = item.Name,
+                        Id = item.Id,
+                        WaitTime = TimeSpan.Zero.ToString()
+
+                    };
+                    svm.Add(store);
+                }
+
+
             }
             return View(svm);
         }
@@ -183,6 +229,8 @@ namespace PizzaSquare.Web.Controllers
             return View(storeOrdersVM);
         }
 
+
+
         // Displays store preset pizzas
         public IActionResult Menu(int? id)
         {
@@ -190,6 +238,28 @@ namespace PizzaSquare.Web.Controllers
             {
                 return NotFound();
             }
+
+            if (_repo.GetLastOrderDate(id.Value, currUser.Id).HasValue)
+            {
+                // customer has previous order from this restaurant
+                DateTime lastOrder = _repo.GetLastOrderDate(id.Value, currUser.Id).Value;
+                TimeSpan timeSinceLastOrder = DateTime.Now - lastOrder;
+                TimeSpan waitTime = DateTime.Now - lastOrder.AddHours(1);
+
+                if (timeSinceLastOrder.TotalHours > 1)
+                {
+                    // time since last order more than an hour from now - > can order
+
+
+                }
+                else
+                {
+                    // last order was within an hour before -> can't order
+                    return RedirectToAction("Index");
+
+                }
+            }
+
 
             Stores store = _repo.GetStoreById(id.Value);
             _repo.SetCurrStore(store);
@@ -208,8 +278,7 @@ namespace PizzaSquare.Web.Controllers
                     Sauce = p.Sauce.Name,
                     Cheese = p.Cheese.Name,
                     Toppings = new List<String>() { p.Topping1.Name, p.Topping2.Name },
-                    Price = _pizzaRepo.GetPriceByID(p.Id)
-                    
+                    Price = _pizzaRepo.GetPriceByID(p.Id),                    
                 };
                 spvm.Add(pizza);
             }

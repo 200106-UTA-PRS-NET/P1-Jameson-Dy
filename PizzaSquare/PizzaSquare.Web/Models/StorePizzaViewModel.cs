@@ -18,5 +18,7 @@ namespace PizzaSquare.Web.Models
         public string Topping1 { get; set; }
         public string Topping2 { get; set; }
         public decimal Price { get; set; }
+
+        public DateTime? WaitTime { get; set; }
     }
 }

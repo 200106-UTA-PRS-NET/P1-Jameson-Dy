@@ -68,11 +68,13 @@ namespace PizzaSquare.Web.Controllers
             if (_repo.SubmitOrder(_userRepo.GetCurrUser().Id, _storeRepo.GetCurrStore().Id))
             {
                 // ORDER SUBMITTED
+                _repo.ClearOrder();
                 return RedirectToAction("Menu", "Store", new { id = _storeRepo.GetCurrStore().Id });
             }
             else 
             {
                 // ORDER NOT SUBMITTED
+                _repo.ClearOrder();
                 return RedirectToAction("Menu", "StoreController", _storeRepo.GetCurrStore().Id);
             }
         }
