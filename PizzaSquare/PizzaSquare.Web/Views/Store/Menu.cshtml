@@ -60,7 +60,9 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.ActionLink("Add to order", "Edit", new { /* id=item.PrimaryKey */ })
+                <form asp-action="Preset">
+                    <input type="submit" value="Add to order" class="btn btn-primary" />
+                </form>
             </td>
         </tr>
 }

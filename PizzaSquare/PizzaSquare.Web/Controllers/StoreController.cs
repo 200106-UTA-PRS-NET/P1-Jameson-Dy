@@ -74,7 +74,18 @@ namespace PizzaSquare.Web.Controllers
 
             return View(customPizzaModel);
         }
-       
+
+        /*
+         * public IActionResult Preset(int? id)
+        {
+            if (currUser == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+        }
+        */
+
         [HttpGet]
         public IActionResult ConfirmPizza(CustomPizzaViewModel c)
         {
@@ -85,8 +96,18 @@ namespace PizzaSquare.Web.Controllers
 
             Pizzas pizza = _pizzaRepo.MapPizzaByIDs(c.SelCrustId, c.SelSauceId, c.SelCheeseId, c.SelSizeId, c.SelTopping1Id, c.SelTopping2Id);
             _orderRepo.SetCurrentPizza(pizza);
+
+            string pizzaName ="";
+            if (pizza.Name == "" || pizza.Name == null)
+            {
+                pizzaName = "Custom";
+            } else
+            {
+                pizzaName = pizza.Name;
+            }
             PizzaViewModel pvm = new PizzaViewModel()
             {
+                Name = pizzaName,
                 Cheese = pizza.Cheese,
                 Sauce = pizza.Sauce,
                 Size = pizza.Size,
@@ -114,7 +135,6 @@ namespace PizzaSquare.Web.Controllers
 
             return RedirectToAction("ViewOrder", "Order");
         }
-
 
         // Displays store order history
         public IActionResult OrderHistory(int? id)
@@ -146,11 +166,9 @@ namespace PizzaSquare.Web.Controllers
             return View(storeOrdersVM);
         }
 
-
         // Displays store preset pizzas
         public IActionResult Menu(int? id)
         {
-
             if (id == null)
             {
                 return NotFound();

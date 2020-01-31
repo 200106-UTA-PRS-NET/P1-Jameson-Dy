@@ -21,5 +21,8 @@ namespace PizzaSquare.Web.Models
         public int SelTopping1Id { get; set; }
         [Required]
         public int SelTopping2Id { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+
     }
 }
