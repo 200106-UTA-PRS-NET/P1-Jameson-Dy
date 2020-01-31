@@ -15,6 +15,8 @@ namespace PizzaSquare.Web.Controllers
         private readonly IPizzaRepo _pizzaRepo;
         private readonly IStoreRepo _storeRepo;
         private readonly IUserRepo _userRepo;
+        Users currUser;
+        Stores currStore;
 
         public OrderController(IOrderRepo repo, IPizzaRepo pizzaRepo, IStoreRepo storeRepo, IUserRepo userRepo)
         {
@@ -22,10 +24,17 @@ namespace PizzaSquare.Web.Controllers
             _pizzaRepo = pizzaRepo;
             _storeRepo = storeRepo;
             _userRepo = userRepo;
+            currUser = _userRepo.GetCurrUser();
+            currStore = _storeRepo.GetCurrStore();
         }
 
         public IActionResult ViewOrder()
         {
+            if (currUser == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             var pizzas = _repo.GetOrderedPizzas().ToList();
 
             OrderViewModel ovm = new OrderViewModel()
@@ -51,6 +60,11 @@ namespace PizzaSquare.Web.Controllers
 
         public IActionResult SubmitOrder()
         {
+            if (currUser == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             if (_repo.SubmitOrder(_userRepo.GetCurrUser().Id, _storeRepo.GetCurrStore().Id))
             {
                 // ORDER SUBMITTED

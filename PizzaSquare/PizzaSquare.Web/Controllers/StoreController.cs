@@ -14,12 +14,16 @@ namespace PizzaSquare.Web.Controllers
         private readonly IStoreRepo _repo;
         private readonly IPizzaRepo _pizzaRepo;
         private readonly IOrderRepo _orderRepo;
+        private readonly IUserRepo _userRepo;
+        Users currUser = new Users();
 
-        public StoreController(IStoreRepo repo, IPizzaRepo pizzaRepo, IOrderRepo orderRepo)
+        public StoreController(IStoreRepo repo, IPizzaRepo pizzaRepo, IOrderRepo orderRepo, IUserRepo userRepo)
         {
             _repo = repo;
             _pizzaRepo = pizzaRepo;
             _orderRepo = orderRepo;
+            _userRepo = userRepo;
+            currUser = _userRepo.GetCurrUser();
         }
 
         public IActionResult Index()
@@ -41,6 +45,11 @@ namespace PizzaSquare.Web.Controllers
         // Page to create custom pizzas
         public IActionResult Custom()
         {
+            if (currUser == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             Dictionary<Toppings, bool> top = new Dictionary<Toppings, bool>();
             foreach(var topping in _pizzaRepo.GetToppingTypes())
             {
@@ -69,6 +78,11 @@ namespace PizzaSquare.Web.Controllers
         [HttpGet]
         public IActionResult ConfirmPizza(CustomPizzaViewModel c)
         {
+            if (currUser == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             Pizzas pizza = _pizzaRepo.MapPizzaByIDs(c.SelCrustId, c.SelSauceId, c.SelCheeseId, c.SelSizeId, c.SelTopping1Id, c.SelTopping2Id);
             _orderRepo.SetCurrentPizza(pizza);
             PizzaViewModel pvm = new PizzaViewModel()
@@ -88,6 +102,11 @@ namespace PizzaSquare.Web.Controllers
         [HttpPost]
         public IActionResult ConfirmPizza(PizzaViewModel pvm)
         {
+            if (currUser == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             Pizzas p = _orderRepo.GetCurrentPizza();
             _orderRepo.AddPizzaToOrder(p, _pizzaRepo.GetPriceByPizza(p));
 
@@ -100,6 +119,11 @@ namespace PizzaSquare.Web.Controllers
         // Displays store order history
         public IActionResult OrderHistory(int? id)
         {
+            if (currUser == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             List<Orders> orders = _orderRepo.GetStoreOrderHistoryById(id.Value);
 
             List<StoreOrderHistoryViewModel> storeOrdersVM = new List<StoreOrderHistoryViewModel>();
