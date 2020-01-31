@@ -6,41 +6,43 @@
 
 <h1>OrderHistory</h1>
 
-<div id="accordion" role="tablist" aria-multiselectable="true">
-    @{ 
-        string solution = "#";
-        List<int> numbers = new List<int>();
-    }
 
+
+<div class="panel-group" id="accordion">
     @foreach (var item in Model)
-            { string order = "#a" + item.OrderId.ToString();
-                string orderID = "a" + item.OrderId.ToString();
+    {
 
-        <div class="card">
-            <div class="card-header" role="tab" id="headingOne">
-                <h5 class="mb-0">
-                    <a data-toggle="collapse" data-parent="#accordion" href="@order" aria-expanded="true" aria-controls="@item.OrderId" class="">
-                        ORDER TITLES HERE
-                    </a>
-                </h5>
-            </div>
-
-            <div id="@item.OrderId" class="collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="">
-                <div class="card-block">
-                    ORDER DEETS HERE
-                </div>
+    <div class="panel panel-default">
+        <div class="card-header" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne_@item.OrderId.ToString()">
+                    <span>Order# @item.OrderId</span>
+                    <span style="float:right">@item.OrderDate.ToShortDateString()</span>
+                    <p></p>
+                    <span>Store: @item.StoreName</span>
+                    <span style="float:right">Subtotal: @item.Subtotal.ToString("0.00")</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne_@item.OrderId.ToString()" class="panel-collapse collapse in">
+            <div class="card-block">
+                <p>Total pizzas: @item.Pizzas.Count</p>
+                <ul>
+                    @for (int i = 0; i < item.Pizzas.Count; i++)
+                    {
+                        <p>Pizza# @i</p>
+                        <li> Crust: @item.Pizzas[i].Crust.Name</li>
+                        <li> Cheese: @item.Pizzas[i].Cheese.Name</li>
+                        <li> Sauce: @item.Pizzas[i].Sauce.Name</li>
+                        <li> Size: @item.Pizzas[i].Size.Name</li>
+                        <li> Toppings: @item.Pizzas[i].Topping1.Name, @item.Pizzas[i].Topping2.Name</li>
+                        <hr />
+                    }
+                </ul>
+                <hr />
             </div>
         </div>
-        numbers.Add(item.OrderId);
-
+    </div>
     }
+
 </div>
-
-<script>
-    @{ 
-        solution += String.Join(", #a", numbers);
-    }
-    $(document).ready(function () {
-        $('@solution').collapse();
-    });
-</script>

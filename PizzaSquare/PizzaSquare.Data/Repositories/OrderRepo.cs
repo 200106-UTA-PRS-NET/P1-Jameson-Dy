@@ -152,12 +152,10 @@ namespace PizzaSquare.Data.Repositories
 
         public List<Pizzas> GetOrderedPizzasByOrderId(int orderID)
         {
-            var query = from p in db.Pizzas
-                        from op in db.OrderPizzas
-                        where op.OrderId == orderID
-                        select p;
+            var query = db.OrderPizzas.Where(o => o.OrderId == orderID).Select(o => o.PizzaId);
+            var pizzas = db.Pizzas.Where(p => query.Contains(p.Id));
 
-            return query.ToList();
+            return pizzas.ToList();
         }
 
         public List<Orders> GetUserOrderHistoryById(int userID)

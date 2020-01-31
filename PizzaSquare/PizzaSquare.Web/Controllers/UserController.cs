@@ -14,14 +14,16 @@ namespace PizzaSquare.Web.Controllers
         private readonly IUserRepo _repo;
         private readonly IOrderRepo _orderRepo;
         private readonly IStoreRepo _storeRepo;
+        private readonly IPizzaRepo _pizzaRepo;
 
         Users currUser;
 
-        public UserController(IUserRepo repo, IOrderRepo orderRepo, IStoreRepo storeRepo)
+        public UserController(IUserRepo repo, IOrderRepo orderRepo, IStoreRepo storeRepo, IPizzaRepo pizzaRepo)
         {
             _repo = repo;
             _orderRepo = orderRepo;
             _storeRepo = storeRepo;
+            _pizzaRepo = pizzaRepo;
             currUser = _repo.GetCurrUser();
         }
 
@@ -145,13 +147,21 @@ namespace PizzaSquare.Web.Controllers
             {
                 var pizzas = _orderRepo.GetOrderedPizzasByOrderId(o.Id).ToList();
 
+                List<Pizzas> pizzaa = new List<Pizzas>();
+                foreach(var p in pizzas) {
+                    Pizzas newp = new Pizzas();
+                    newp = _pizzaRepo.MapPizzaByIDs(p.CrustId.Value, p.SauceId.Value, p.CheeseId.Value, p.SizeId.Value, p.Topping1Id.Value, p.Topping2Id.Value);
+                    newp.Name = p.Name;
+                    pizzaa.Add(newp);
+                }
+
                 UserOrderHistoryViewModel uohVM = new UserOrderHistoryViewModel()
                 {
                     OrderId = o.Id,
                     OrderDate = o.OrderDate.Value,
                     StoreName = _storeRepo.GetStoreById(o.StoreId.Value).Name,
                     Subtotal = o.TotalPrice.Value,
-                    Pizzas = pizzas
+                    Pizzas = pizzaa
                 };
                 orderHistoryList.Add(uohVM);
             }
