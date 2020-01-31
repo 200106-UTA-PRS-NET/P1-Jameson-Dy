@@ -6,73 +6,41 @@
 
 <h1>OrderHistory</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Subtotal)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StoreName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Subtotal)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StoreName)
-                </td>
-                <td>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
 <div id="accordion" role="tablist" aria-multiselectable="true">
+    @{ 
+        string solution = "#";
+        List<int> numbers = new List<int>();
+    }
+
     @foreach (var item in Model)
-    {
+            { string order = "#a" + item.OrderId.ToString();
+                string orderID = "a" + item.OrderId.ToString();
+
         <div class="card">
             <div class="card-header" role="tab" id="headingOne">
                 <h5 class="mb-0">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#a" aria-expanded="true" aria-controls="collapseOne" class="">
+                    <a data-toggle="collapse" data-parent="#accordion" href="@order" aria-expanded="true" aria-controls="@item.OrderId" class="">
                         ORDER TITLES HERE
                     </a>
                 </h5>
             </div>
 
-            <div id="a" class="collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="">
+            <div id="@item.OrderId" class="collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="">
                 <div class="card-block">
                     ORDER DEETS HERE
                 </div>
             </div>
         </div>
+        numbers.Add(item.OrderId);
+
     }
 </div>
 
 <script>
+    @{ 
+        solution += String.Join(", #a", numbers);
+    }
     $(document).ready(function () {
-        $('#a, #collapseTwo').collapse();
+        $('@solution').collapse();
     });
 </script>
