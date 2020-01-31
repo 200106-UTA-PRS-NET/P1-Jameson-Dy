@@ -12,10 +12,17 @@ namespace PizzaSquare.Web.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepo _repo;
+        private readonly IOrderRepo _orderRepo;
+        private readonly IStoreRepo _storeRepo;
 
-        public UserController(IUserRepo repo)
+        Users currUser;
+
+        public UserController(IUserRepo repo, IOrderRepo orderRepo, IStoreRepo storeRepo)
         {
             _repo = repo;
+            _orderRepo = orderRepo;
+            _storeRepo = storeRepo;
+            currUser = _repo.GetCurrUser();
         }
 
 
@@ -23,8 +30,6 @@ namespace PizzaSquare.Web.Controllers
         [Route("User/Info")]
         public IActionResult Info(int? id)
         {
-            var currUser = _repo.GetCurrUser();
-
             if (currUser == null)
             {
                 // not logged in -> send to login page
@@ -59,8 +64,6 @@ namespace PizzaSquare.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginUserViewModel user)
         {
-            var currUser = _repo.GetCurrUser();
-
             if (currUser != null)
             {
                 // someone already logged in
@@ -126,6 +129,35 @@ namespace PizzaSquare.Web.Controllers
             {
                 return View();
             }
+        }
+
+        public IActionResult OrderHistory()
+        {
+            if (currUser == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            var orders = _orderRepo.GetUserOrderHistoryById(currUser.Id);
+
+            List<UserOrderHistoryViewModel> orderHistoryList = new List<UserOrderHistoryViewModel>();
+            foreach(Orders o in orders)
+            {
+                var pizzas = _orderRepo.GetOrderedPizzasByOrderId(o.Id).ToList();
+
+                UserOrderHistoryViewModel uohVM = new UserOrderHistoryViewModel()
+                {
+                    OrderId = o.Id,
+                    OrderDate = o.OrderDate.Value,
+                    StoreName = _storeRepo.GetStoreById(o.StoreId.Value).Name,
+                    Subtotal = o.TotalPrice.Value,
+                    Pizzas = pizzas
+                };
+                orderHistoryList.Add(uohVM);
+            }
+
+            return View(orderHistoryList);
+
         }
 
     }

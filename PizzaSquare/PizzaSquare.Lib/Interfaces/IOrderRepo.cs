@@ -13,5 +13,6 @@ namespace PizzaSquare.Lib.Interfaces
         public bool SubmitOrder(int userID, int storeID);
         public List<Orders> GetStoreOrderHistoryById(int storeID);
         public List<Pizzas> GetOrderedPizzasByOrderId(int orderID);
+        public List<Orders> GetUserOrderHistoryById(int userID);
     }
 }

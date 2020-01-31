@@ -9,7 +9,7 @@ namespace PizzaSquare.Data.Repositories
 {
     public class OrderRepo : IOrderRepo
     {
-        PizzaSquareContext db;
+        readonly PizzaSquareContext db;
         static Dictionary<Pizzas, decimal> orderedPizzas = new Dictionary<Pizzas, decimal>();
         static Pizzas currPizza = new Pizzas();
 
@@ -156,6 +156,13 @@ namespace PizzaSquare.Data.Repositories
                         from op in db.OrderPizzas
                         where op.OrderId == orderID
                         select p;
+
+            return query.ToList();
+        }
+
+        public List<Orders> GetUserOrderHistoryById(int userID)
+        {
+            var query = db.Orders.Where(o => o.UserId == userID);
 
             return query.ToList();
         }
