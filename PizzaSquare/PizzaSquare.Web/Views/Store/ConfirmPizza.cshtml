@@ -9,11 +9,16 @@
 
 
 <div>
-    <h4>PizzaViewModel</h4>
     <hr />
 
     <form asp-action="ConfirmPizza" method="post">
         <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Crust)
             </dt>
@@ -56,9 +61,6 @@
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Price)
             </dd>
-
-            @Html.HiddenFor(m => m.Crust)
-            @Html.HiddenFor(m => m.Cheese)
 
             <dd class="col-sm-10">
                 <input type="submit" value="Confirm" class="btn btn-primary" />

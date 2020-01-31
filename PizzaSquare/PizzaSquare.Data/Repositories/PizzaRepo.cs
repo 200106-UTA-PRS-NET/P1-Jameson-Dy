@@ -75,5 +75,12 @@ namespace PizzaSquare.Data.Repositories
         {
             return p.Cheese.Price.Value + p.Sauce.Price.Value + p.Crust.Price.Value + p.Size.Price.Value;
         }
+
+        public Pizzas GetPizzaById(int id)
+        {
+            var query = db.Pizzas.Where(p => p.Id == id).Single();
+
+            return query;
+        }
     }
 }

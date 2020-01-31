@@ -60,9 +60,7 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                <form asp-action="Preset">
-                    <input type="submit" value="Add to order" class="btn btn-primary" />
-                </form>
+                <a asp-action="Preset" asp-route-id="@item.PizzaID" class="btn btn-primary">Add to order</a>
             </td>
         </tr>
 }

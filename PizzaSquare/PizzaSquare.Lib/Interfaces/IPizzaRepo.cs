@@ -6,6 +6,7 @@ namespace PizzaSquare.Lib.Interfaces
 {
     public interface IPizzaRepo
     {
+        public Pizzas GetPizzaById(int id);
         public decimal GetPriceByID(int id);
         public List<Cheeses> GetCheeseTypes();
         public List<Sauces> GetSauceTypes();

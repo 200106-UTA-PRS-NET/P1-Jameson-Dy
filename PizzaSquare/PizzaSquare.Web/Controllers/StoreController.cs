@@ -75,16 +75,32 @@ namespace PizzaSquare.Web.Controllers
             return View(customPizzaModel);
         }
 
-        /*
-         * public IActionResult Preset(int? id)
-        {
+         public IActionResult Preset(int? id)
+         {
+            if (id == null)
+            {
+                return NotFound();
+            }
             if (currUser == null)
             {
                 return RedirectToAction("Login", "User");
             }
 
+            Pizzas p = _pizzaRepo.GetPizzaById(id.Value);
+
+            CustomPizzaViewModel cpVM = new CustomPizzaViewModel()
+            {
+                Name = p.Name,
+                SelCrustId = p.CrustId.Value,
+                SelCheeseId = p.CheeseId.Value,
+                SelSauceId = p.SauceId.Value,
+                SelSizeId = p.SizeId.Value,
+                SelTopping1Id = p.Topping1Id.Value,
+                SelTopping2Id = p.Topping2Id.Value
+            };
+
+            return RedirectToAction("ConfirmPizza", cpVM);
         }
-        */
 
         [HttpGet]
         public IActionResult ConfirmPizza(CustomPizzaViewModel c)
@@ -97,13 +113,14 @@ namespace PizzaSquare.Web.Controllers
             Pizzas pizza = _pizzaRepo.MapPizzaByIDs(c.SelCrustId, c.SelSauceId, c.SelCheeseId, c.SelSizeId, c.SelTopping1Id, c.SelTopping2Id);
             _orderRepo.SetCurrentPizza(pizza);
 
-            string pizzaName ="";
-            if (pizza.Name == "" || pizza.Name == null)
+            string pizzaName;
+
+            if (c.Name == "" || c.Name == null)
             {
                 pizzaName = "Custom";
             } else
             {
-                pizzaName = pizza.Name;
+                pizzaName = c.Name;
             }
             PizzaViewModel pvm = new PizzaViewModel()
             {
