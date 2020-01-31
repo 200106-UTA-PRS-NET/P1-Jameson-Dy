@@ -66,12 +66,17 @@ namespace PizzaSquare.Data.Repositories
 
         public DateTime? GetLastOrderDate(int storeID, int userID)
         {
-
+            try
+            {
                 var lastOrder = db.Orders.Where(o => o.StoreId == storeID && o.UserId == userID)
                     .OrderByDescending(o => o.OrderDate)
                     .FirstOrDefault();
 
                 return lastOrder.OrderDate.Value;
-        }
+            } catch (InvalidOperationException)
+            {
+                    return null;
+            }
+}
     }
 }

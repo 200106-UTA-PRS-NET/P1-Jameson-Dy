@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PizzaSquare.Web.Models.StoreOrderHistoryViewModel>
+
+@{
+    ViewData["Title"] = "OrderHistory";
+}
+
+<h1>OrderHistory</h1>
+
+
+
+<div class="panel-group" id="accordion">
+    @foreach (var item in Model)
+    {
+
+    <div class="panel panel-default">
+        <div class="card-header" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne_@item.OrderID.ToString()">
+                    <span>Order# @item.OrderID</span>
+                    <span style="float:right">@item.OrderDate.ToShortDateString()</span>
+                    <p></p>
+                    <span style="float:right">Subtotal: @item.Subtotal.ToString("0.00")</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne_@item.OrderID.ToString()" class="panel-collapse collapse in">
+            <div class="card-block">
+                <p>Total pizzas: @item.OrderedPizzas.Count</p>
+                <ul>
+                    @for (int i = 0; i < item.OrderedPizzas.Count; i++)
+                    {
+                        <p>Pizza# @i</p>
+                        <li> Crust: @item.OrderedPizzas[i].Crust.Name</li>
+                        <li> Cheese: @item.OrderedPizzas[i].Cheese.Name</li>
+                        <li> Sauce: @item.OrderedPizzas[i].Sauce.Name</li>
+                        <li> Size: @item.OrderedPizzas[i].Size.Name</li>
+                        <li> Toppings: @item.OrderedPizzas[i].Topping1.Name, @item.OrderedPizzas[i].Topping2.Name</li>
+                        <hr />
+                    }
+                </ul>
+                <hr />
+            </div>
+        </div>
+    </div>
+    }
+
+</div>

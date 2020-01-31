@@ -214,13 +214,24 @@ namespace PizzaSquare.Web.Controllers
             
             foreach(var item in orders)
             {
+                var pizzas = _orderRepo.GetOrderedPizzasByOrderId(item.Id).ToList();
+
+                List<Pizzas> pizzaa = new List<Pizzas>();
+                foreach (var p in pizzas)
+                {
+                    Pizzas newp = new Pizzas();
+                    newp = _pizzaRepo.MapPizzaByIDs(p.CrustId.Value, p.SauceId.Value, p.CheeseId.Value, p.SizeId.Value, p.Topping1Id.Value, p.Topping2Id.Value);
+                    newp.Name = p.Name;
+                    pizzaa.Add(newp);
+                }
+
                 StoreOrderHistoryViewModel oVM = new StoreOrderHistoryViewModel()
                 {
                     UserID = item.UserId.Value,
                     OrderID = item.Id,
                     OrderDate = item.OrderDate.Value,
                     Subtotal = item.TotalPrice.Value,
-                    OrderedPizzas = _orderRepo.GetOrderedPizzasByOrderId(item.Id)
+                    OrderedPizzas = pizzaa
                 };
 
                 storeOrdersVM.Add(oVM);
