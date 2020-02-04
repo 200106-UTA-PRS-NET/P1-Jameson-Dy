@@ -15,8 +15,6 @@ variables:
   test: 'PizzaSquare/PizzaSquare.Test'
   buildConfiguration: 'Release'
 
-
-
 steps:
 - task: SonarCloudPrepare@1
   inputs:
@@ -43,6 +41,8 @@ steps:
     --no-build
     --results-directory $(Build.ArtifactStagingDirectory)/PizzaSquare.Test/
     /p:CollectCoverage=true
+    /p:CoverletOutputFormat=opencover
+    /p:CoverletOutput="$(Build.ArtifactStagingDirectory)/coverage/"
   workingDirectory: $(solution)
   displayName: 'dotnet test'
 
@@ -52,15 +52,15 @@ steps:
     projects: '$(test)'
     workingDirectory: '$(solution)'
 
-# dotnet publish
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'VSTest'
-    testResultsFiles: '*.trx'
-    searchFolder: '$(Build.ArtifactStagingDirectory)/PizzaSquare.Test'
-  displayName: 'Publish test results'
-
 - task: SonarCloudAnalyze@1
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
+
+## CDelivery Start taking artifact as an input
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: '281ad485-cb2c-46c0-b6d3-151b686ca505'
+    appType: 'webAppLinux'
+    appName: 'PizzaSquareApp'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
