@@ -16,12 +16,27 @@ variables:
   buildConfiguration: 'Release'
 
 
+
 steps:
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud connection 1'
+    organization: '$(SonarOrganization)'
+    scannerMode: 'MSBuild'
+    projectKey: '$(SonarProjectKey)'
+    projectName: '$(SonarProjectName)'
+    extraProperties: 
+      sonar.cs.opencover.reportPaths="$(Build.ArtifactStagingDirectory)/coverage/*"
+      sonar.cs.vstest.reportPaths="$(Build.ArtifactStagingDirectory)/test/*.trx"
+      sonar.exclusions=**/wwwroot/lib/**/*
+
+# dotnet build
 - script: 
     dotnet build --configuration $(buildConfiguration)
   workingDirectory: $(solution)
   displayName: 'dotnet build $(buildConfiguration)'
 
+# dotnet test
 - script: dotnet test
     --configuration $(buildConfiguration)
     --logger trx
@@ -31,9 +46,21 @@ steps:
   workingDirectory: $(solution)
   displayName: 'dotnet test'
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '$(test)'
+    workingDirectory: '$(solution)'
+
+# dotnet publish
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'VSTest'
     testResultsFiles: '*.trx'
     searchFolder: '$(Build.ArtifactStagingDirectory)/PizzaSquare.Test'
   displayName: 'Publish test results'
+
+- task: SonarCloudAnalyze@1
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
