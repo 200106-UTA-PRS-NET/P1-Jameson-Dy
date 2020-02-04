@@ -56,3 +56,11 @@ steps:
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
+
+## CDelivery Start taking artifact as an input
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Visual Studio Enterprise with MSDN(281ad485-cb2c-46c0-b6d3-151b686ca505)'
+    appType: 'webAppLinux'
+    appName: 'emsutapipeline'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
