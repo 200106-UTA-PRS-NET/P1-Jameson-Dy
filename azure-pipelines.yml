@@ -60,7 +60,7 @@ steps:
 ## CDelivery Start taking artifact as an input
 - task: AzureWebApp@1
   inputs:
-    azureSubscription: 'Azure subscription 1(281ad485-cb2c-46c0-b6d3-151b686ca505)'
+    azureSubscription: '281ad485-cb2c-46c0-b6d3-151b686ca505'
     appType: 'webAppLinux'
-    appName: 'emsutapipeline'
+    appName: 'PizzaSquareApp'
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
