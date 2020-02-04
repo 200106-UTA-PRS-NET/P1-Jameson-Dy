@@ -10,8 +10,8 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: 'PizzaSquare'
-  project: 'PizzaSquare/PizzaSquare.Web'
+  solution: 'PizzaSquare/'
+  project: 'PizzaSquare/PizzaSquare.Web/'
   test: 'PizzaSquare/PizzaSquare.Test'
   buildConfiguration: 'Release'
 
