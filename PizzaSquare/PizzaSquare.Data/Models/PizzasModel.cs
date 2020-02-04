@@ -1,7 +1,4 @@
 ﻿using PizzaSquare.Lib;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PizzaSquare.Data.Models
 {

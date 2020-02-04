@@ -2,9 +2,7 @@
 using PizzaSquare.Lib.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using PizzaSquare.Data.Models;
 
 namespace PizzaSquare.Data.Repositories
 {

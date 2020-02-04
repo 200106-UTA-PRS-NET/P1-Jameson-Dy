@@ -1,5 +1,4 @@
 using PizzaSquare.Lib;
-using System;
 using Xunit;
 
 namespace PizzaSquare.Test

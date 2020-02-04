@@ -1,11 +1,8 @@
-﻿using PizzaSquare.Data.Models;
-using PizzaSquare.Lib;
+﻿using PizzaSquare.Lib;
 using PizzaSquare.Lib.Interfaces;
 using System;
-using PizzaSquare.Data;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PizzaSquare.Data.Repositories
 {
