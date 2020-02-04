@@ -1,0 +1,39 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: 'PizzaSquare'
+  project: 'PizzaSquare/PizzaSquare.Web'
+  test: 'PizzaSquare/PizzaSquare.Test'
+  buildConfiguration: 'Release'
+
+
+steps:
+- script: 
+    dotnet build --configuration $(buildConfiguration)
+  workingDirectory: $(solution)
+  displayName: 'dotnet build $(buildConfiguration)'
+
+- script: dotnet test
+    --configuration $(buildConfiguration)
+    --logger trx
+    --no-build
+    --results-directory $(Build.ArtifactStagingDirectory)/PizzaSquare.Test/
+    /p:CollectCoverage=true
+  workingDirectory: $(solution)
+  displayName: 'dotnet test'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '*.trx'
+    searchFolder: '$(Build.ArtifactStagingDirectory)/PizzaSquare.Test'
+  displayName: 'Publish test results'
