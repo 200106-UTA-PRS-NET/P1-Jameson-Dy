@@ -82,8 +82,6 @@ namespace PizzaSquare.Web.Controllers
                     };
                     svm.Add(store);
                 }
-
-
             }
             return View(svm);
         }
@@ -186,6 +184,7 @@ namespace PizzaSquare.Web.Controllers
         [HttpPost]
         public IActionResult ConfirmPizza(PizzaViewModel pvm)
         {
+            
             if (currUser == null)
             {
                 return RedirectToAction("Login", "User");

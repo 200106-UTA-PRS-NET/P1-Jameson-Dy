@@ -27,6 +27,8 @@ namespace PizzaSquare.Web.Controllers
             currUser = _userRepo.GetCurrUser();
             currStore = _storeRepo.GetCurrStore();
         }
+        
+        
 
         public IActionResult ViewOrder()
         {
