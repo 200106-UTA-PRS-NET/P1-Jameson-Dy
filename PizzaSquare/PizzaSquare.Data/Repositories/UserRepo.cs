@@ -11,10 +11,7 @@ namespace PizzaSquare.Data.Repositories
         readonly PizzaSquareContext db;
         static Users currUser;
 
-        public UserRepo()
-        {
-            db = new PizzaSquareContext();
-        }
+        
         public UserRepo(PizzaSquareContext db)
         {
             this.db = db ?? throw new ArgumentNullException(nameof(db));

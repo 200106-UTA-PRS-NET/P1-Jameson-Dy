@@ -10,10 +10,6 @@ namespace PizzaSquare.Data.Repositories
     {
         PizzaSquareContext db;
 
-        public PizzaRepo()
-        {
-            db = new PizzaSquareContext();
-        }
         public PizzaRepo(PizzaSquareContext db)
         {
             this.db = db ?? throw new ArgumentNullException(nameof(db));

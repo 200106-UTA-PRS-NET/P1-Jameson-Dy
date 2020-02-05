@@ -12,10 +12,6 @@ namespace PizzaSquare.Data.Repositories
         static Dictionary<Pizzas, decimal> orderedPizzas = new Dictionary<Pizzas, decimal>();
         static Pizzas currPizza = new Pizzas();
 
-        public OrderRepo()
-        {
-            db = new PizzaSquareContext();
-        }
         public OrderRepo(PizzaSquareContext db)
         {
             this.db = db ?? throw new ArgumentNullException(nameof(db));

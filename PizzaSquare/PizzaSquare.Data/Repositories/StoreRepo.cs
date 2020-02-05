@@ -11,10 +11,6 @@ namespace PizzaSquare.Data.Repositories
         PizzaSquareContext db;
         static Stores currStore;
 
-        public StoreRepo()
-        {
-            db = new PizzaSquareContext();
-        }
         public StoreRepo(PizzaSquareContext db)
         {
             this.db = db ?? throw new ArgumentNullException(nameof(db));
@@ -69,9 +65,9 @@ namespace PizzaSquare.Data.Repositories
             {
                 var lastOrder = db.Orders.Where(o => o.StoreId == storeID && o.UserId == userID)
                     .OrderByDescending(o => o.OrderDate)
-                    .FirstOrDefault();
+                    .First();
 
-                return lastOrder.OrderDate.Value;
+                return lastOrder.OrderDate;
             } catch (InvalidOperationException)
             {
                     return null;

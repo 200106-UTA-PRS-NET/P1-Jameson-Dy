@@ -248,7 +248,9 @@ namespace PizzaSquare.Web.Controllers
                 return NotFound();
             }
 
-            if (_repo.GetLastOrderDate(id.Value, currUser.Id).HasValue)
+            bool hasPrevOrder = _repo.GetLastOrderDate(id.Value, currUser.Id).HasValue;
+
+            if (hasPrevOrder)
             {
                 // customer has previous order from this restaurant
                 DateTime lastOrder = _repo.GetLastOrderDate(id.Value, currUser.Id).Value;
