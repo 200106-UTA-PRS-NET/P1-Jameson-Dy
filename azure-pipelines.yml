@@ -57,10 +57,20 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
 
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    arguments: --configuration $(buildConfiguration)
+    publishWebProjects: true
+    zipAfterPublish: true
+    workingDirectory: '$(solution)'
+  displayName: 'dotnet publish + zip'
+
 ## CDelivery Start taking artifact as an input
 - task: AzureWebApp@1
   inputs:
-    azureSubscription: '281ad485-cb2c-46c0-b6d3-151b686ca505'
+    azureSubscription: 'Azure subscription 1(281ad485-cb2c-46c0-b6d3-151b686ca505)'
     appType: 'webAppLinux'
-    appName: 'PizzaSquareApp'
+    appName: 'PizzaSquare'
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
